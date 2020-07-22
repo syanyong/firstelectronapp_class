@@ -22,7 +22,8 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   mainContainer: {
-    height: '100vh',
+    height: 'calc(100vh - 20px)',
+    width: '100%',
     marginTop: 0, 
     marginLeft: 0, marginRight: 0
   },
@@ -37,16 +38,21 @@ const useStyles = makeStyles((theme) => ({
 // Function component
 function App() {
   const [Input, setInput] = useState(false)
+  const [inputIoT, setinputIoT] = useState(false)
   const [messageLog, setmessageLog]   = useState([])
 
   // componentDidMount
   useEffect(() => {
     console.log("useEffect active")
 
-    ipcRenderer.on("Input", (event, value) => {  // Receive
-      console.log("New Input " + value)
-      setInput(value)
-      appendLog(`Staus ${value}`)
+    ipcRenderer.on("inputHW", (event, value) => {
+      setInput(Input => (value))
+      appendLog(`InputHW ${value}`)
+    })
+
+    ipcRenderer.on("inputIoT", (event, value) => {
+      setinputIoT(inputIoT => (value))
+      appendLog(`inputIoT ${value}`)
     })
 
   }, [])
@@ -59,7 +65,7 @@ function App() {
     var d = new Date()
     let dateString = `${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`
     // setmessageLog([...messageLog, `${dateString} ${msg}`])
-    setmessageLog([`${dateString} ${msg}`, ...messageLog])
+    setmessageLog(messageLog => ([`${dateString} ${msg}`, ...messageLog]))
   }
 
   const classes = useStyles();
@@ -71,10 +77,18 @@ function App() {
           <Divider />
           <CardContent style={{textAlign:"center"}}>
             <div>
-              <Typography variant="h6"> Input</Typography>
-              <WbIncandescentIcon style={{ 
-                color: green[Input ? 500 : 0], fontSize: 100
-              }}/> 
+              <div style={{display:"inline-block"}}>
+                <Typography variant="h6"> Input HW</Typography>
+                <WbIncandescentIcon style={{ 
+                  color: green[Input ? 500 : 0], fontSize: 100
+                }}/> 
+              </div>
+              <div style={{display:"inline-block"}}>
+                <Typography variant="h6"> Input IoT</Typography>
+                <WbIncandescentIcon style={{ 
+                  color: green[inputIoT ? 500 : 0], fontSize: 100
+                }}/> 
+              </div>
             </div>
             <div>
               <Typography variant="h6"> Output</Typography>
@@ -92,7 +106,7 @@ function App() {
         <Card variant="outlined" className={classes.fullHeight} style={{}}>
           <CardHeader title={"Logging"}></CardHeader>
           <Divider />
-          <CardContent  className={classes.messageLog} style={{textAlign:"left", height: '100%', overflow: 'scroll'}}>
+          <CardContent  className={classes.messageLog} >
             {messageLog.map((log) => (
               <p>{log}</p>
             ))}
@@ -100,12 +114,6 @@ function App() {
         </Card>
       </Grid>
     </Grid>
-    // <div>
-    //   {buttonStatus ? "ON" : "OFF"}
-    //   <WbIncandescentIcon style={{ 
-    //     color: green[buttonStatus ? 500 : 0], fontSize: 100
-    //     }}/> 
-    // </div>
   );
 }
 export default App;

@@ -15,8 +15,8 @@ var iot_button = new blynk.VirtualPin(3);
 
 //#region onoff library
 const Gpio = require('onoff').Gpio;
-// const hw_button = new Gpio(4, 'in', 'both');
-// const hw_led = new Gpio(17, 'out');
+const hw_button = new Gpio(4, 'in', 'both');
+const hw_led = new Gpio(17, 'out');
 //#endregion
 
 app.on('ready', () => {
@@ -34,17 +34,18 @@ app.on('ready', () => {
     mainWindow.loadURL(startUrl);
     console.log("Render")
 
-    // hw_button.watch((err, value) => {    // From onOff
-    //     if (err) {
-    //       throw err;
-    //     }
-    //     console.log(value)
-    //     mainWindow.webContents.send("buttonStatus", !parseInt(value)) // To React
-    //     iot_led.setValue(!parseInt(value) == 1 ? 255 : 0) // To Blynk
-    // });
-    iot_button.on('write', function(param) {  // From Blynk
-        console.log('IoT Button:', parseInt(param))
-        // hw_led.writeSync(parseInt(param))  // To onOff
-    });     
+    hw_button.watch((err, value) => {    // From onOff
+        if (err) {
+          throw err;
+        }
+        console.log(`HW BUTTON: ${value}`)
+        mainWindow.webContents.send("inputHW", !parseInt(value)) // To React
+        iot_led.setValue(!parseInt(value) == 1 ? 255 : 0) // To Blynk
+    });
+    iot_button.on('write', function(value) {  // From Blynk
+        console.log('IoT Button:', parseInt(value))
+        hw_led.writeSync(parseInt(value))  // To onOff
+           mainWindow.webContents.send("inputIoT", !parseInt(value)) // To React
+    });
 });
 
