@@ -10,7 +10,7 @@ var mainWindow;  // MainWindow Object
 var BlynkLib = require('blynk-library'); 
 var blynk = new BlynkLib.Blynk('TX26D5S6AHqEgY_jrl_icva1oTOcYUqu'); 
 var iot_led = new blynk.WidgetLED(2); // VirtualPin V2
-var iot_button = new blynk.VirtualPin(3); 
+var iot_button = new blynk.VirtualPin(3); // Virtual Pin V3
 //#endregion include blynk library
 
 //#region onoff library
@@ -44,8 +44,8 @@ app.on('ready', () => {
     });
     iot_button.on('write', function(value) {  // From Blynk
         console.log('IoT Button:', parseInt(value))
+        mainWindow.webContents.send("inputIoT", !parseInt(value)) // To React
         hw_led.writeSync(parseInt(value))  // To onOff
-           mainWindow.webContents.send("inputIoT", !parseInt(value)) // To React
     });
 });
 
