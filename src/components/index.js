@@ -71,6 +71,7 @@ function App() { // Function Component: <App/>
         Primary
       </Button>
       <AddAlertIcon style={{color: true ? "blue" : "green"}}/> 
+      <AddAlertIcon className="myStyle" /> 
       <IconButton onClick={() => { handleClicked('DEL') }}>
         <AddAlertIcon/>
       </IconButton>
