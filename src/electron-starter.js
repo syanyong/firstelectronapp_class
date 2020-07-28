@@ -8,6 +8,8 @@ const url      = require('url')
 const path     = require('path')
 var BlynkLib = require('blynk-library'); // Import blynk
 var blynk    = new BlynkLib.Blynk('i5e2KXP08krOUS2Aqn0QOBYzOBpIxWL8'); // Regis
+var iot_led  = new blynk.WidgetLED(2); // VirtualPin V2
+
 
 var mainWindow;  // MainWindow Object
 
@@ -27,8 +29,10 @@ app.on('ready', () => {
     mainWindow.loadURL(startUrl);
     // console.log("Render")
 
+    // Trigger from renderer process
     ipcMain.on('setLed', (event, message) => {
         console.log("At mainProcess " + message)
+        iot_led.turnOn()
     })
     
 });
