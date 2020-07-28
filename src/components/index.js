@@ -7,6 +7,8 @@ import IconButton from '@material-ui/core/IconButton';
 import AddAlertIcon from '@material-ui/icons/AddAlert';
 import './index.css';
 
+const ipcRenderer  = window.require("electron").ipcRenderer;
+
 const useStyles = makeStyles((theme) => ({
   root: {
     // '& > *': {
@@ -63,12 +65,17 @@ function App() { // Function Component: <App/>
     setLists(newList)
   }
 
+  function handleSetLed () {
+    console.log("At handleSetLed")
+    ipcRenderer.send("setLed", true)
+  }
+
   return (
     <div style={{color: "blue"}}>
       <h1>{name}</h1>
       <MorningComponent/>
-      <Button variant="contained" color="secondary">
-        Primary
+      <Button onClick={()=>{handleSetLed()}} variant="contained" color="secondary">
+        SET LED
       </Button>
       <AddAlertIcon style={{color: true ? "blue" : "green"}}/> 
       <AddAlertIcon className="myStyle" /> 
