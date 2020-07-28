@@ -3,7 +3,8 @@ import React, {useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
+// import AddAlertIcon from '@material-ui/icons/Delete';
+import AddAlertIcon from '@material-ui/icons/AddAlert';
 import './index.css';
 
 const useStyles = makeStyles((theme) => ({
@@ -69,7 +70,10 @@ function App() { // Function Component: <App/>
       <Button variant="contained" color="secondary">
         Primary
       </Button>
-      <IconButton><DeleteIcon/></IconButton>
+      <AddAlertIcon style={{color: true ? "blue" : "green"}}/> 
+      <IconButton onClick={() => { handleClicked('DEL') }}>
+        <AddAlertIcon/>
+      </IconButton>
       <MyButton text="Hello" onClick={handleClicked}/>
       <MyButton text="Bye" onClick={handleClicked}/>
       <table>
