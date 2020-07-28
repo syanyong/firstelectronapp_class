@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import logo from './logo.svg';
+//import logo from './logo.svg';
 import './index.css';
 
 function MorningComponent () {
@@ -31,13 +31,23 @@ function MyButton (props) { // Function Component: <MyButton/>
 }
 function App() { // Function Component: <App/>
   const [name, setName] = useState("RAI") // name will be dynamics var
-  const [lists, setLists] = useState([0, 1])
+  const [lists, setLists] = useState([])
+  
 
   function handleClicked(text) {
     console.log("@App myButtonClicked " + text)
     setName(text)
-     // Append List for React
-    setLists([...lists, text]);
+    var newId = (lists.length === 0) ? (0) : (lists[lists.length-1].id + 1) // assign id
+    setLists([...lists, {id: newId, text: text} ]); // Append list
+    console.log(lists)
+  }
+
+  function handleRemove(id) { // Handle remove button
+    console.log(id)
+    // Filter function to filter data in array
+    // IF condition is TRUE, the item in lists will not be removed.
+    const newList = lists.filter((item) => !(item.id === id) ) // Remove item by id
+    setLists(newList)
   }
 
   return (
@@ -46,13 +56,19 @@ function App() { // Function Component: <App/>
       <MorningComponent/>
       <MyButton text="Hello" onClick={handleClicked}/>
       <MyButton text="Bye" onClick={handleClicked}/>
-      <ul>
-      {
-        lists.map((item) => (
-          <li>{item}</li>
-        ))
-      }
-      </ul>
+      <table>
+        <tbody>
+          {
+          lists.map((item) => (
+            <tr key={item.id}>
+              <td style={{border: "1px solid green"}}>{item.id}</td>
+              <td style={{border: "1px solid green"}}>{item.text}</td>
+              <td><button onClick={()=>{handleRemove(item.id)}}>REMOVE</button></td>
+            </tr>
+          ))
+          }
+        </tbody>
+      </table>
     </div>
   );
 }
