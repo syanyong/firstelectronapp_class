@@ -30,10 +30,15 @@ app.on('ready', () => {
     // console.log("Render")
 
     // Trigger from renderer process
+    var toggle = 0
     ipcMain.on('setLed', (event, message) => {
         console.log("At mainProcess " + message)
-        iot_led.turnOn()
+        if (toggle) {
+            iot_led.turnOn()
+        } else {
+            iot_led.turnOff()
+        }
+        toggle = !toggle
     })
-    
 });
 
