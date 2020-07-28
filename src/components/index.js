@@ -1,6 +1,16 @@
 import React, {useState} from 'react';
 //import logo from './logo.svg';
+import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
 import './index.css';
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    // '& > *': {
+    //   margin: theme.spacing(1),
+    // },
+  },
+}));
 
 function MorningComponent () {
   return (
@@ -32,7 +42,7 @@ function MyButton (props) { // Function Component: <MyButton/>
 function App() { // Function Component: <App/>
   const [name, setName] = useState("RAI") // name will be dynamics var
   const [lists, setLists] = useState([])
-  
+  const classes = useStyles();
 
   function handleClicked(text) {
     console.log("@App myButtonClicked " + text)
@@ -54,6 +64,9 @@ function App() { // Function Component: <App/>
     <div style={{color: "blue"}}>
       <h1>{name}</h1>
       <MorningComponent/>
+      <Button variant="contained" color="secondary">
+        Primary
+      </Button>
       <MyButton text="Hello" onClick={handleClicked}/>
       <MyButton text="Bye" onClick={handleClicked}/>
       <table>
