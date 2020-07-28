@@ -6,6 +6,8 @@ const app      = electron.app;
 const ipcMain  = electron.ipcMain;
 const url      = require('url')
 const path     = require('path')
+var BlynkLib = require('blynk-library'); // Import blynk
+var blynk    = new BlynkLib.Blynk('i5e2KXP08krOUS2Aqn0QOBYzOBpIxWL8'); // Regis
 
 var mainWindow;  // MainWindow Object
 
