@@ -45,5 +45,11 @@ app.on('ready', () => {
         }
         toggle = !toggle
     })
+
+    hw_button.watch((err, value) => {
+        console.log(`Button ${value}`)
+        mainWindow.webContents.send("inputHW", !parseInt(value))
+    });
+
 });
 

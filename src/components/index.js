@@ -47,7 +47,16 @@ function MyButton (props) { // Function Component: <MyButton/>
 function App() { // Function Component: <App/>
   const [name, setName] = useState("RAI") // name will be dynamics var
   const [lists, setLists] = useState([])
+  const [Input, setInput] = useState(false)
   const classes = useStyles();
+
+  // Execute on start
+  React.useEffect(() => {
+    ipcRenderer.on("inputHW", (event, value) => { 
+      console.log(`ipcRenderer inputHW ${value}`)
+      setInput(value)
+    })
+  }, [])
 
   function handleClicked(text) {
     console.log("@App myButtonClicked " + text)
@@ -77,7 +86,7 @@ function App() { // Function Component: <App/>
       <Button onClick={()=>{handleSetLed()}} variant="contained" color="secondary">
         SET LED
       </Button>
-      <AddAlertIcon style={{color: true ? "blue" : "green"}}/> 
+      <AddAlertIcon fontSize="large" style={{color: Input ? "green" : "red"}}/> 
       <AddAlertIcon className="myStyle" /> 
       <IconButton onClick={() => { handleClicked('DEL') }}>
         <AddAlertIcon/>
