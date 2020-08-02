@@ -11,7 +11,7 @@ var blynk    = new BlynkLib.Blynk('i5e2KXP08krOUS2Aqn0QOBYzOBpIxWL8'); // Regis
 var iot_led  = new blynk.WidgetLED(2); // VirtualPin V2
 const Gpio = require('onoff').Gpio;
 const hw_led = new Gpio(17, 'out');
-const hw_button = new Gpio(4, 'in', 'both');
+const hw_button = new Gpio(4, 'in', 'both', {debounceTimeout: 10});
 
 
 var mainWindow;  // MainWindow Object
