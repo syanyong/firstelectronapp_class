@@ -9,6 +9,9 @@ const path     = require('path')
 var BlynkLib = require('blynk-library'); // Import blynk
 var blynk    = new BlynkLib.Blynk('i5e2KXP08krOUS2Aqn0QOBYzOBpIxWL8'); // Regis
 var iot_led  = new blynk.WidgetLED(2); // VirtualPin V2
+const Gpio = require('onoff').Gpio;
+const hw_led = new Gpio(17, 'out');
+const hw_button = new Gpio(4, 'in', 'both');
 
 
 var mainWindow;  // MainWindow Object
@@ -30,13 +33,15 @@ app.on('ready', () => {
     // console.log("Render")
 
     // Trigger from renderer process
-    var toggle = 0
+    var toggle = false
     ipcMain.on('setLed', (event, message) => {
-        console.log("At mainProcess " + message)
+        console.log("At mainProcess " + toggle)
         if (toggle) {
             iot_led.turnOn()
+            hw_led.writeSync(1)
         } else {
             iot_led.turnOff()
+            hw_led.writeSync(0)
         }
         toggle = !toggle
     })
